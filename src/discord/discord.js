@@ -12,7 +12,6 @@ function handleButtonInteraction(interaction) {
     const {customId, user} = interaction
 
     if (customId.split("=")[0] == "block") { 
-        console.log("SHEEESH",customId)
         const [from, to] = customId.substring(6).split(",").map(value => atob(value))
         
         console.log("Creating a new block", user.id, from, to)
