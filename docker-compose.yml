@@ -1,0 +1,14 @@
+version: "3.9"
+# You'd probably want to additionally spin up an MariaDB container here, depending on your envirionment
+# This configuration assumes you are using an external database
+
+services:
+    app:
+        build:
+            context: .
+        image: ghcr.io/testausserveri/koirameili
+        restart: unless-stopped
+        env_file:
+            - .env
+        ports:
+            - "25:25"

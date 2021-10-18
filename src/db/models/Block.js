@@ -1,7 +1,7 @@
 import sequelize from "sequelize";
 
 export function defineBlock(instance) {
-    const Block = instance.define('Block', {
+    const Block = instance.define('block', {
         id: {
             type: sequelize.INTEGER,
             primaryKey: true,

@@ -68,6 +68,7 @@ async function handleCommandInteraction(interaction) {
 
 async function handleMessageComponentInteraction(interaction) {
     if (interaction.customId == "blockdelete") {
+        console.log("Removing blocks", interaction.user.id, interaction.values)
         const blocks = (await database.models.block.list(interaction.user.id))
 
         for (const blockid of interaction.values) {

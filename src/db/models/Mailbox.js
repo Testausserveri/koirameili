@@ -1,7 +1,7 @@
 import sequelize from "sequelize";
 
 export function defineMailbox(instance) {
-    const Mailbox = instance.define('Mailbox', {
+    const Mailbox = instance.define('mailbox', {
         id: {
             type: sequelize.INTEGER,
             primaryKey: true,
