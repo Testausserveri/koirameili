@@ -1,5 +1,7 @@
 # Koirameili
- 
+
+This project is work in progress and not in use production at Testausserveri yet.
+
 ## Development
 
 First off, create `.env` file from the `.example.env` and configure it appropriately. You'll need a MariaDB database, Discord bot token, and a domain for receiving mail.

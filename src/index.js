@@ -29,7 +29,6 @@ mailin.on('message', async (_, data) => {
             // Abort if from-to pair has been blocked
             if (await database.models.block.exists(from, mailbox.toString())) {
                 console.log(`Aborting delivery, block exists ${from} -> ${recipient.address}`)
-
                 return
             }
 

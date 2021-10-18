@@ -9,7 +9,7 @@ client.on('ready', () => {
 })
 
 client.on('interactionCreate', interaction => {
-	if (!interaction.isButton()) return
+    if (!interaction.isButton()) return
 
     const {customId, user} = interaction
 
