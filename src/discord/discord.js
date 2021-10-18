@@ -63,6 +63,14 @@ async function handleCommandInteraction(interaction) {
         };
         
         await interaction.reply(response);
+    } else if (interaction.commandName == "mailboxes") {
+        const mailboxes = await database.models.mailbox.list(interaction.user.id)
+
+        await interaction.reply(`Pystyt vastaanottamaan sähköpostia seuraavista osoitteista:\n\n` + 
+        mailboxes.flatMap(mailbox => 
+            process.env.MAILDOMAIN.split(",").map(maildomain => 
+                (`• ${mailbox.mailbox}@${maildomain}`)
+            )).join("\n").substring(1600))
     }
 }
 

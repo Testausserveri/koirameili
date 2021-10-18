@@ -7,10 +7,16 @@ await dotenv.config()
 import { REST } from '@discordjs/rest'
 import { Routes } from 'discord-api-types/v9'
 
-const commands = [{
-    name: 'unblock',
-    description: 'Näyttää valikon, josta voi poistaa valitsemansa eston'
-}];
+const commands = [
+    {
+        name: 'unblock',
+        description: 'Näyttää valikon, josta voi poistaa valitsemansa eston'
+    },
+    {
+        name: 'mailboxes',
+        description: 'Listaa sähköpostiosoitteesi'
+    }
+];
 
 const rest = new REST({ version: '9' }).setToken(process.env.DISCORDTOKEN);
 

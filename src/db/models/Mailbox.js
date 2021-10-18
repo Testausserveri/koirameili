@@ -31,5 +31,14 @@ export function defineMailbox(instance) {
         return mailbox ? mailbox.dataValues : {userid: null}
     } 
 
+    Mailbox.list = async (userid) => {
+        const mailbox = await Mailbox.findAll({
+            where: {
+                userid
+            }
+        })
+        return mailbox ? mailbox.map(b => b.dataValues) : null
+    }
+
     return Mailbox
 }
