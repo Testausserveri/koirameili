@@ -1,22 +1,19 @@
+import dotenv from "dotenv"
+await dotenv.config()
+
 import { Sequelize } from "sequelize"
 import { defineBlock } from "./models/Block.js";
 import { defineMailbox } from "./models/Mailbox.js"
 
-let sequelize, models = {}
+const sequelize = new Sequelize(process.env.MARIADBDB, process.env.MARIADBUSER, process.env.MARIADBPASS, {
+    host: process.env.MARIADBHOST,
+    dialect: 'mariadb',
+    logging: false
+})
 
-function create(db, user, pass, host) {
-    sequelize = new Sequelize(db, user, pass, {
-        host: host,
-        dialect: 'mariadb',
-        charset: 'utf8',
-        collate: 'utf8_unicode_ci',
-        logging: false
-    })
-
-    models = {
-        mailbox: defineMailbox(sequelize),
-        block: defineBlock(sequelize)
-    }
+const models = {
+    mailbox: defineMailbox(sequelize),
+    block: defineBlock(sequelize)
 }
 
 async function connect() {
@@ -32,5 +29,4 @@ async function connect() {
     }
 }
 
-const database = {connect, create, models}
-export default database
+export default {connect, models}

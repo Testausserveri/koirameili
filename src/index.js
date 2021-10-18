@@ -7,8 +7,6 @@ import discord from "./discord/discord.js"
 import { emailAddressToMailboxName, formatAddress } from "./utils.js"
 
 await discord.client.login(process.env.DISCORDTOKEN)
-
-database.create(process.env.MARIADBDB, process.env.MARIADBUSER, process.env.MARIADBPASS, process.env.MARIADBHOST)
 await database.connect()
 
 mailin.start({
@@ -26,7 +24,7 @@ mailin.on('message', async (_, data) => {
             // Resolve mailbox and corresponding Discord recipient
             const mailbox = emailAddressToMailboxName(recipient.address)
             const {userid} = await database.models.mailbox.findByName(mailbox.name)
-            if (!userid) throw `Mailbox ${mailbox.name} isn't claimed`
+            if (!userid) throw new Error(`Mailbox ${mailbox.name} isn't claimed`)
 
             // Abort if from-to pair has been blocked
             if (await database.models.block.exists(from, mailbox.toString())) {
@@ -45,6 +43,6 @@ mailin.on('message', async (_, data) => {
             })
         }
     } catch (e) {
-        console.log(`Couldn't deliver mail. ${e.message}`, e)
+        console.log(`Couldn't deliver mail. ${e.message}`)
     }
 })
