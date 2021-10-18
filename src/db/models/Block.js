@@ -32,5 +32,23 @@ export function defineBlock(instance) {
         return !!block 
     }
 
+    Block.list = async (userid) => {
+        const block = await Block.findAll({
+            where: {
+                userid
+            }
+        })
+        return block ? block.map(b => b.dataValues) : null
+    }
+
+    Block.delete = (userid, id) => {
+        return Block.destroy({
+            where: {
+                id,
+                userid
+            }
+        });
+    }
+
     return Block
 }
