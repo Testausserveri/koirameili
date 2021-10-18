@@ -7,6 +7,7 @@ export function emailAddressToMailboxName(email) {
     // to-do: validate whether the email address is using whitelisted domain
     const mailbox = {
         name: email.split('@')[0],
+        email: email, 
         label: null,
         toString: function() {
             if (this.label) {

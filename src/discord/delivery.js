@@ -20,17 +20,16 @@ const blockButton = (from, to) => ({
 export async function deliverMail(userid, message) {
     const user = await client.users.fetch(userid)
     const color = Math.floor(Math.random()*16777215);
-
     function sendEmbed(title, description, last) {
         return user.send({
             embeds: [{
                 color, title, description
             }],
-            ...(last ? blockButton(message.from[0].address, message.mailbox.toString()) : null)
+            ...(last ? blockButton(message.from[0].address, message.mailbox.email) : null)
         })
     }
 
-    const title = `Lähettäjä: ${formatAddress(message.from)}\nSaaja: ${formatAddress(message.to)}\n\n${message.subject}`;
+    const title = `Lähettäjä: ${formatAddress(message.from)}\nSaaja: ${formatAddress(message.to)}\n\n${message.subject || "Ei otsikkoa"}`;
 
     if (message.text.toString().length < 1500) {
         sendEmbed(

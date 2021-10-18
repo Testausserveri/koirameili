@@ -12,17 +12,18 @@ function handleButtonInteraction(interaction) {
     const {customId, user} = interaction
 
     if (customId.split("=")[0] == "block") { 
-        const [from, to] = customId.split("=")[1].split(",").map(value => atob(value))
+        console.log("SHEEESH",customId)
+        const [from, to] = customId.substring(6).split(",").map(value => atob(value))
         
         console.log("Creating a new block", user.id, from, to)
 
         database.models.block.create({
             from,
-            to,
+            to: to,
             userid: user.id
         })
 
-        interaction.reply(`Lähettäjä **${from}** on jatkossa estetty lähettämästä osoitteeseen **${to}@${process.env.MAILDOMAIN}**.`)
+        interaction.reply(`Lähettäjä **${from}** on jatkossa estetty lähettämästä osoitteeseen **${to}**.`)
     } else {
         interaction.reply("Huutista :D Mulla ei ole kyllä nyt harmainta hajuakaan mitä on tapahtunut :DD Mut tiiän ainaki sen et toi nappula on RIKKI.")
     }
@@ -50,7 +51,7 @@ async function handleCommandInteraction(interaction) {
                             "custom_id": "blockdelete",
                             "options": blocks.map(block => ({
                                 "label": `${block.from}`,
-                                "description": `→ ${block.to}@${process.env.MAILDOMAIN}`,
+                                "description": `→ ${block.to}`,
                                 "value": block.id.toString()
                             })),
                             "placeholder": "Valitse esto",
@@ -77,7 +78,7 @@ async function handleMessageComponentInteraction(interaction) {
 
         interaction.reply(`Poistettu seuraavat estot: \n\n` + interaction.values.map(blockid => {
             const block = blocks.find(b => b.id == blockid)
-            return `• ${block.from} → ${block.to}@${process.env.MAILDOMAIN}`
+            return `• ${block.from} → ${block.to}`
         }).join("\n"))
     } else {
         interaction.reply("Nyt jokin meni pieleen.")
