@@ -1,5 +1,10 @@
-// to-do: validate whether the email address is using whitelisted domain
+/**
+ * Get first part of an email address and divide it by the plus sign, in order to find out the mailbox name and the extra label part.
+ * @param {*} email An email address
+ * @returns {Object}
+ */
 export function emailAddressToMailboxName(email) {
+    // to-do: validate whether the email address is using whitelisted domain
     const mailbox = {
         name: email.split('@')[0],
         label: null,
@@ -21,6 +26,11 @@ export function emailAddressToMailboxName(email) {
     return mailbox
 }
 
+/**
+ * Format an array of address objects to a pretty string
+ * @param {*} addr Array of address objects 
+ * @returns {String}
+ */
 export function formatAddress(addr) {
     let out = '';
     /*
