@@ -1,7 +1,9 @@
 import dotenv from "dotenv"
 await dotenv.config()
 
-import mailin from "mailin"
+import { SMTPServer } from "smtp-server"
+import { simpleParser as parser } from "mailparser"
+
 import database from "./db/database.js"
 import discord from "./discord/discord.js"
 import { emailAddressToMailboxName, formatAddress } from "./utils.js"
@@ -9,18 +11,30 @@ import { emailAddressToMailboxName, formatAddress } from "./utils.js"
 await discord.client.login(process.env.DISCORDTOKEN)
 await database.connect()
 
-mailin.start({
-    port: 25,
-    disableWebhook: true,
-    logLevel: "warn"
-})
+const server = new SMTPServer({
+    onData(stream, session, callback) {
+        parser(stream, {}, (err, parsed) => {
+                if (err) {
+                    console.log("Error:" , err)
+                    return
+                }
+                
+                onMessage(parsed)
+                stream.on("end", callback)
+        })
+      
+    },
+    disabledCommands: ['AUTH']
+});
+  
+server.listen(25, "0.0.0.0")
 
-mailin.on('message', async (_, data) => {
+async function onMessage(data) {
     try {
-        console.log(`Mail received from ${formatAddress(data.from)} -> to ${formatAddress(data.to)}`)
-        const from = data.from[0].address
-
-        for (const recipient of data.to) {
+        console.log(`Mail received from ${formatAddress(data.from.value)} -> to ${formatAddress(data.to.value)}`)
+        const from = data.from.value[0].address
+        console.log(data)
+        for (const recipient of data.to.value) {
             // Resolve mailbox and corresponding Discord recipient
             const mailbox = emailAddressToMailboxName(recipient.address)
             const {userid} = await database.models.mailbox.findByName(mailbox.name)
@@ -34,8 +48,8 @@ mailin.on('message', async (_, data) => {
 
             // Deliver received email to Discord
             discord.deliverMail(userid, {
-                from: data.from,
-                to: data.to,
+                from: data.from.value,
+                to: data.to.value,
                 mailbox: mailbox,
                 subject: data.subject,
                 text: data.text
@@ -44,4 +58,4 @@ mailin.on('message', async (_, data) => {
     } catch (e) {
         console.log(`Couldn't deliver mail. ${e.message}`)
     }
-})
+}
