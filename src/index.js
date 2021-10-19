@@ -33,7 +33,6 @@ async function onMessage(data) {
     try {
         console.log(`Mail received from ${formatAddress(data.from.value)} -> to ${formatAddress(data.to.value)}`)
         const from = data.from.value[0].address
-        console.log(data)
         for (const recipient of data.to.value) {
             // Resolve mailbox and corresponding Discord recipient
             const mailbox = emailAddressToMailboxName(recipient.address)
