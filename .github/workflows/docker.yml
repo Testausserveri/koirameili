@@ -1,0 +1,33 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Log in to the Container registry
+      uses: docker/login-action@v1
+      with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          
+    - name: Checkout
+      uses: actions/checkout@v2
+    
+    - name: Build and push backend Docker image
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        push: true
+        tags: ghcr.io/testausserveri/koirameili
+      
+    
