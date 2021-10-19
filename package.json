@@ -10,7 +10,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "patch": "npm --no-git-tag-version version patch",
     "minor": "npm --no-git-tag-version version minor",
-    "docker-build": "version=$(node -e \"console.log(require('./package.json').version);\") | docker build . -t ghcr.io/testausserveri/koirameili:v$version -t ghcr.io/testausserveri/koirameili:latest",
+    "docker-build": "version=$(node -e \"console.log(require('./package.json').version)\") && docker build . -t ghcr.io/testausserveri/koirameili:v$version -t ghcr.io/testausserveri/koirameili:latest",
     "docker-push": "docker push ghcr.io/testausserveri/koirameili --all-tags"
   },
   "author": "",
