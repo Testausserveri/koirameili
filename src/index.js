@@ -20,9 +20,10 @@ const server = new SMTPServer({
                 }
                 
                 onMessage(parsed)
-                stream.on("end", callback)
+                //stream.on("end", callback)
         })
-      
+
+        return callback();
     },
     disabledCommands: ['AUTH']
 });
