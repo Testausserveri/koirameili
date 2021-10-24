@@ -20,7 +20,7 @@ jobs:
           key: ${{ secrets.KEY }}
           port: ${{ secrets.PORT }}
           script: |
-            cd ~/koirameili/
+            cd ~/app/
             docker-compose down
             docker-compose pull
             docker-compose up -d
