@@ -25,8 +25,7 @@ const server = new SMTPServer({
 
         return callback();
     },
-    disabledCommands: ['AUTH', 'STARTTLS'],
-    secure: false
+    disabledCommands: ['AUTH']
 });
   
 server.listen(25, "0.0.0.0")
