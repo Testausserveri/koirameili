@@ -23,8 +23,6 @@ function handleButtonInteraction(interaction) {
         })
 
         interaction.reply(`Lähettäjä **${from}** on jatkossa estetty lähettämästä osoitteeseen **${to}**. Estoja voi purkaa komennolla **/unblock**.`)
-    } else {
-        interaction.reply("Huutista :D Mulla ei ole kyllä nyt harmainta hajuakaan mitä on tapahtunut :DD Mut tiiän ainaki sen et toi nappula on RIKKI.")
     }
 }
 
