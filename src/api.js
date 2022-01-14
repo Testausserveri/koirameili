@@ -12,7 +12,7 @@ apiRoute.get("/users", async (req, res) => {
 
 apiRoute.get("/checkAvailability", async (req, res) => {
     if (!req.query.mailbox || req.query.mailbox.length <= 1) return res.status(400).json({available: null})
-    const available = !(await database.models.mailbox.findByName(req.query.mailbox)).userid
+    const available = (await database.models.mailbox.findByName(req.query.mailbox)).userid || false
     res.json({available})
 })
 

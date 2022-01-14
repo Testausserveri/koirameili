@@ -10,7 +10,7 @@ function MailboxCard(props) {
     const [ welcomeHeaderTemplate, setWelcomeHeaderTemplate ] = useState('');
     const [ mailboxName, setMailboxName ] = useState('');
     const [ forceShow, setForceShow ] = useState(false);
-
+    const [ availability, setAvailability ] = useState("");
     useEffect(() => {
         console.log('Fetching welcomeHeader from ' + welcomeHeaderFile + '...');
         fetch(welcomeHeaderFile)
@@ -40,8 +40,18 @@ function MailboxCard(props) {
         v.start();
     }
 
-    const update = (name) => {
-        renderCanvas(name);    
+    const updateAvailability = async (mailbox) => {
+        const {available} = await fetch(`/api/checkAvailability?mailbox=${encodeURIComponent(mailbox)}`).then(res => res.json())
+
+        if (available == null) return setAvailability("")
+
+        console.log(available, available ? "statusAvailable" : "statusUnavailable")
+        return setAvailability(available)
+    }
+    
+    function onChange(name) {
+        updateAvailability(name);
+        renderCanvas(name);
     }
 
     const updateMemberData = () => {
@@ -100,7 +110,10 @@ function MailboxCard(props) {
             )}
             <div style={(!!!props.memberData.registered || forceShow) ? {} : {display: 'none'}}>
                 <label htmlFor="memberEmailInput">Sähköpostilaatikon nimi</label><br></br>
-                <input id="memberEmailInput" value={mailboxName} autoFocus={true} autoComplete="off" spellCheck="false" type="text" onKeyUp={inputKeyUpEvent} onChange={(event) => update(event.target.value)} />
+                <div className={!availability ? "statusAvailable" : "statusUnavailable"} style={{ "--taken-by": "'Varattu " + (availability ? props.members.find(member => member.id === availability)?.username || "": "") + "'" }}>
+                    <input id="memberEmailInput" value={mailboxName} autoFocus={true} autoComplete="off" spellCheck="false" type="text" onKeyUp={inputKeyUpEvent} onChange={(event) => onChange(event.target.value)} />
+                </div>
+                
                 <canvas></canvas><br /><br />
                 <input type="button" id="registerBtn" value="Rekisteröi ja lähetä viesti" onClick={() => register()}/>
             </div>

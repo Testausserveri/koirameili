@@ -105,3 +105,26 @@ thead th {
     background-color: white;
     border-bottom: 1px solid #ddd;
 }
+
+.statusAvailable, .statusUnavailable {
+    position: relative;
+}
+.statusAvailable::after, .statusUnavailable::after {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    right: 0;
+    height: 100%;
+    top: 0;
+    position: absolute;
+    margin-right: 1.4em;
+}
+.statusAvailable::after {
+    content: 'Saatavilla';
+    color: green;
+}
+.statusUnavailable::after {
+    content: var(--taken-by);
+    color: red;
+}
