@@ -1,8 +1,8 @@
-import { Client } from "discord.js"
+import { Client, Intents } from "discord.js"
 import database from "../db/database.js"
 import { deliverMail } from "./delivery.js"
 
-export const client = new Client({ intents: [] })
+export const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS] })
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`)

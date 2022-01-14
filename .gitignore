@@ -78,3 +78,6 @@ typings/
 # mailin temp
 src/.tmp
 .tmp
+
+.DS_Store
+frontend/build/
