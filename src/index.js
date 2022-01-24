@@ -1,8 +1,10 @@
 import dotenv from "dotenv"
 await dotenv.config()
 
+import path from "path"
 import express from "express"
-import { apiRoute } from "./api.js"
+import basicAuth from "express-basic-auth"
+import { apiRoute } from "./api/api.js"
 
 import database from "./db/database.js"
 import discord from "./discord/discord.js"
@@ -14,7 +16,10 @@ await database.connect()
 const httpServer = express()
 const mailServer = smtpServer();
 
+const users = Object.fromEntries(process.env.APIUSERS.split(",").map(line => line.split(":")))
+httpServer.use(basicAuth({ users, challenge: true }))
 httpServer.use("/api/", apiRoute)
+httpServer.use(express.static(path.join(path.resolve(), './frontend/build/')))
   
 mailServer.listen(25, "0.0.0.0")
 httpServer.listen(4000)

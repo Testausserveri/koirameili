@@ -11,4 +11,5 @@ services:
         env_file:
             - .env
         ports:
-            - "25:25"
+            - 25:25
+            - 8080:4000

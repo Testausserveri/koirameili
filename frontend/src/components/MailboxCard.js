@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import welcomeHeaderFile from '../welcomeHeader.svg';
 
 function cleanMailboxName(name) {
-    return name.trim().toLowerCase().replace(/ /g, '.').replace(/ä/g, 'a').replace(/ö/g, 'o').replace(/[^0-9a-zA-Z.]/g, '');
+    return name.trim().split("#")[0].toLowerCase().replace(/ /g, '.').replace(/ä/g, 'a').replace(/ö/g, 'o').replace(/[^0-9a-zA-Z.]/g, '');
 }
 
 function MailboxCard(props) {
@@ -23,6 +23,7 @@ function MailboxCard(props) {
     useEffect(() => {
         setForceShow(false);
         if (Object.keys(props.memberData).length > 0) {
+            updateAvailability(props.memberData.username)
             renderCanvas(props.memberData.username);     
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -75,17 +76,19 @@ function MailboxCard(props) {
                 formData.append('image', blob, mailboxName + '.png');
                 formData.append('id', props.memberData.id);
                 formData.append('mailbox', mailboxName);
-                fetch('/api/sendWelcome', {
+                fetch('/api/register', {
                     method: 'POST',
                     body: formData
                 })
-                .then(res => {
-                    console.log(res)
-                    if (res.status === 200) {
+                .then(res => res.json() )
+                .then(data => {
+                    console.log(data)
+                    if (data.status === "ok") {
                         setForceShow(false);
                         updateMemberData();
                     } else {
-                        alert('Tapahtui jokin virhe. Älä myönnä käyttäjälle uutta sähköpostilaatikkoa. Ota yhteyttä järjestelmänvalvojaa.');
+
+                        alert('Tapahtui virhe: ' + data.message);
                     }
                 })
             });
@@ -100,7 +103,7 @@ function MailboxCard(props) {
             <p>
                 <b>
                     Jäsenellä on jo sähköpostilaatikko.&nbsp;
-                    <a href="#forceShow" onClick={(event) => {event.preventDefault(); setForceShow(true); setTimeout(()=>{document.querySelector('#memberEmailInput').focus();}, 5)}}>Luo alias</a>
+                    <a href="#forceShow" onClick={(event) => {event.preventDefault(); setForceShow(true); setTimeout(()=>{updateAvailability(mailboxName); document.querySelector('#memberEmailInput').focus();}, 5)}}>Luo alias</a>
                 </b>
             </p> 
             : 
