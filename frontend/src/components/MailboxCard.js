@@ -23,11 +23,15 @@ function MailboxCard(props) {
     useEffect(() => {
         setForceShow(false);
         if (Object.keys(props.memberData).length > 0) {
-            updateAvailability(props.memberData.username)
             renderCanvas(props.memberData.username);     
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.memberData])
+
+    useEffect(() => {
+        if (mailboxName.length === 0) return
+        updateAvailability(mailboxName)
+    }, [mailboxName])
 
     const renderCanvas = async (username) => {
         console.log('Rendering canvas...')
@@ -51,7 +55,6 @@ function MailboxCard(props) {
     }
     
     function onChange(name) {
-        updateAvailability(name);
         renderCanvas(name);
     }
 
