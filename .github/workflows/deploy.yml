@@ -23,4 +23,4 @@ jobs:
             cd ~/app/
             docker-compose down
             docker-compose pull
-            authbind --deep docker-compose up
+            authbind --deep docker-compose up -d
