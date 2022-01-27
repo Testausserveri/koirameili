@@ -16,6 +16,10 @@ export async function smtpServer() {
             secure: true,
             key: fs.readFileSync("./certs/private.key"),
             cert: fs.readFileSync("./certs/server.crt"),
+            tls: {
+                ciphers:'SSLv3'
+            },
+            port: 465
         } : {}),
         onData(stream, session, callback) {
             parser(stream, {}, (err, parsed) => {
