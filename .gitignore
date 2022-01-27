@@ -81,3 +81,6 @@ src/.tmp
 
 .DS_Store
 frontend/build/
+
+# certificates
+certs/

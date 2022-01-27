@@ -1,12 +1,22 @@
 import { SMTPServer } from "smtp-server"
 import { simpleParser as parser } from "mailparser"
 
-import { emailAddressToMailboxName, formatAddress } from "./utils.js"
+import { checkFileExists, emailAddressToMailboxName, formatAddress } from "./utils.js"
 import database from "./db/database.js"
 import discord from "./discord/discord.js"
 
-export function smtpServer() {
+import fs from "fs"
+
+export async function smtpServer() {
+    const customTLS = await checkFileExists("./certs/private.key") && await checkFileExists("./certs/server.crt")
+    if (customTLS) console.log("Custom TLS certificate available, using them instead of self-signed certificates")
+
     return new SMTPServer({
+        ...(customTLS ? {
+            secure: true,
+            key: fs.readFileSync("./certs/private.key"),
+            cert: fs.readFileSync("./certs/server.crt"),
+        } : {}),
         onData(stream, session, callback) {
             parser(stream, {}, (err, parsed) => {
                     if (err) {

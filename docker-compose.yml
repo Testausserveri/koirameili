@@ -10,6 +10,11 @@ services:
         restart: unless-stopped
         env_file:
             - .env
+        volumes:
+        # If not given, self-signed certificates will be generated
+        #    - ./certs:/usr/src/app/certs
+        #    - /etc/letsencrypt/live/xxx/fullchain.pem:/usr/src/app/certs/server.crt
+        #    - /etc/letsencrypt/live/xxx/privkey.pem:/usr/src/app/certs/private.key
         ports:
             - 25:25
             - 8080:4000

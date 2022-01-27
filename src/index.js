@@ -14,7 +14,7 @@ await discord.client.login(process.env.DISCORDTOKEN)
 await database.connect()
 
 const httpServer = express()
-const mailServer = smtpServer();
+const mailServer = await smtpServer();
 
 const users = Object.fromEntries(process.env.APIUSERS.split(",").map(line => line.split(":")))
 httpServer.use(basicAuth({ users, challenge: true }))

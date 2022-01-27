@@ -1,3 +1,5 @@
+import fs from "fs"
+
 /**
  * Get first part of an email address and divide it by the plus sign, in order to find out the mailbox name and the extra label part.
  * @param {*} email An email address
@@ -60,4 +62,10 @@ export function chunkString(string, size, multiline = true) {
     let matchAllToken = (multiline == true) ? '[^]' : '.';
     let re = new RegExp(matchAllToken + '{1,' + size + '}', 'g');
     return string.match(re);
+}
+
+export function checkFileExists(file) {
+    return fs.promises.access(file, fs.constants.F_OK)
+             .then(() => true)
+             .catch(() => false)
 }
