@@ -84,10 +84,10 @@ async function handleMessageComponentInteraction(interaction) {
             const block = blocks.find(b => b.id == blockid)
             return `• ${block.from} → ${block.to}`
         }).join("\n"))
-    } else {
-        // testauskoira-rs freedom starts here
-        //interaction.reply("Nyt jokin meni pieleen.")
-    }
+     // testauskoira-rs freedom starts here
+    }/* else {
+        interaction.reply("Nyt jokin meni pieleen.")
+    }*/
 }
 
 client.on('interactionCreate', interaction => {
