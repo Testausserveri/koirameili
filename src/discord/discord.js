@@ -85,7 +85,8 @@ async function handleMessageComponentInteraction(interaction) {
             return `• ${block.from} → ${block.to}`
         }).join("\n"))
     } else {
-        interaction.reply("Nyt jokin meni pieleen.")
+        // testauskoira-rs freedom starts here
+        //interaction.reply("Nyt jokin meni pieleen.")
     }
 }
 
