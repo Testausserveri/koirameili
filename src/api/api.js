@@ -10,7 +10,7 @@ const { cache } = cacheService
 
 export const apiRoute = Router()
 
-const welcomeMessage = (mailbox) => (`Testausserveri on myöntää jäsenilleen ilmaisen sähköpostiosoitteen jäsenetuna!
+const welcomeMessage = (mailbox) => (`Testausserveri myöntää jäsenilleen ilmaisen sähköpostiosoitteen jäsenetuna!
 
 Ole hyvä, tässä on sinun: **${mailbox}@koira.testausserveri.fi**
 
