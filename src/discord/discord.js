@@ -21,7 +21,7 @@ client.on('ready', () => {
 
 export async function registerMailboxForMember(userid, tag, newUsername) {
     try {
-        console.log(`Member: ${tag} (${userid})`)
+        console.log(`Registering mailbox for: ${tag} (${userid})`)
 
         if (!newUsername) {
             console.log("Old username format")
@@ -56,7 +56,10 @@ client.on('guildMemberAdd', async (member) => {
         return
     }
     const newUsername = member.user.discriminator == "0" ? member.user.username : null
-    registerMailboxForMember(member.user.id, member.user.tag, newUsername)
+    console.log(`Scheduling mailbox registration for member ${member.user.tag}`)
+    setTimeout(() => {
+        registerMailboxForMember(member.user.id, member.user.tag, newUsername)
+    }, 1000 * 60 * 10);
 })
 
 function handleButtonInteraction(interaction) {
