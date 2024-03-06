@@ -17,6 +17,7 @@
   "license": "MIT",
   "dependencies": {
     "@discordjs/rest": "^0.1.0-canary.0",
+    "convert-svg-to-png": "^0.6.4",
     "discord-api-types": "^0.24.0",
     "discord.js": "^13.2.0",
     "dotenv": "^10.0.0",

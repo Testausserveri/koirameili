@@ -31,6 +31,16 @@ export function defineMailbox(instance) {
         return mailbox ? mailbox.dataValues : {userid: null}
     } 
 
+    Mailbox.getAvailableMailbox = async (username, i = 0) => {
+        const mailbox = username.replace(" ", ".") + (i > 0 ? i : "")
+        const available = !(await Mailbox.findByName(mailbox)).userid || false
+        if (!available) {
+            i++
+            return Mailbox.getAvailableMailbox(username, i)
+        }
+        return mailbox
+    }
+
     Mailbox.list = async (userid) => {
         const mailbox = await Mailbox.findAll({
             where: {

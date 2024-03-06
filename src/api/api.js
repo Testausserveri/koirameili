@@ -10,7 +10,7 @@ const { cache } = cacheService
 
 export const apiRoute = Router()
 
-const welcomeMessage = (mailbox) => (`Testausserveri myöntää jäsenilleen ilmaisen sähköpostiosoitteen jäsenetuna!
+export const welcomeMessage = (mailbox) => (`Testausserveri myöntää jäsenilleen ilmaisen sähköpostiosoitteen jäsenetuna!
 
 Ole hyvä, tässä on sinun: **${mailbox}@koira.testausserveri.fi**
 
@@ -66,7 +66,7 @@ apiRoute.get("/checkAvailability", async (req, res) => {
     res.json({available})
 })
 
-const getUserData = async () => {
+export const getUserData = async () => {
     const mailboxes = await database.models.mailbox.listAll()
     const guild = await discord.guilds.fetch(process.env.DISCORDDEFAULTGUILD)
     const guildMembers = await guild.members.fetch()
@@ -75,7 +75,9 @@ const getUserData = async () => {
         username: member.user.tag,
         registered: mailboxes.find(mailbox => mailbox.userid == member.id)?.mailbox || false,
         joinedTimestamp: member.joinedTimestamp,
-        createdAt: member.user.createdAt
+        createdAt: member.user.createdAt,
+        // property added after new Discord's API
+        newUsername: member.user.discriminator == "0" ? member.user.username : null
     }))
     members.sort((a, b) => b.joinedTimestamp - a.joinedTimestamp)
 

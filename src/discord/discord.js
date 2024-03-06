@@ -2,10 +2,61 @@ import { Client, Intents } from "discord.js"
 import database from "../db/database.js"
 import { deliverMail } from "./delivery.js"
 
+import fs from "fs/promises"
+import path from "path"
+import crypto from "crypto"
+import convertSvgToPng from "convert-svg-to-png"
+import { welcomeMessage } from "../api/api.js"
+const { createConverter } = convertSvgToPng
+
+const welcomeHeaderSvg = await fs.readFile(path.join(import.meta.dirname, "../../frontend/src/welcomeHeader.svg"), 'utf-8')
+
+const converter = createConverter()
+
 export const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS] })
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`)
+})
+
+export async function registerMailboxForMember(userid, tag, newUsername) {
+    try {
+        console.log(`Member: ${tag} (${userid})`)
+
+        if (!newUsername) {
+            console.log("Old username format")
+            return
+        }
+
+        const mailbox = await database.models.mailbox.getAvailableMailbox(newUsername)
+        console.log("Mailbox: " + mailbox)
+    
+        await database.models.mailbox.create({
+            mailbox, userid, key: await crypto.randomBytes(20).toString('hex')
+        })
+        
+        const renderedWelcomeHeader = await converter.convert(welcomeHeaderSvg.replace('[name]', mailbox))
+    
+        const user = await client.users.fetch(userid)
+        await user.send({files: [renderedWelcomeHeader]})
+        await user.send(welcomeMessage(mailbox))
+    } catch (e) {
+        console.log(e.message)
+    }
+}
+
+client.on('guildMemberAdd', async (member) => {
+    const mailbox = await database.models.mailbox.findOne({
+        where: {
+            userid: member.user.id
+        }
+    })
+    if (mailbox) {
+        console.log(`Member ${member.user.tag} joined the guild but already has a mailbox registered`)
+        return
+    }
+    const newUsername = member.user.discriminator == "0" ? member.user.username : null
+    registerMailboxForMember(member.user.id, member.user.tag, newUsername)
 })
 
 function handleButtonInteraction(interaction) {
