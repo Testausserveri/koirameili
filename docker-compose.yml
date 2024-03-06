@@ -1,6 +1,4 @@
 version: "3.9"
-# You'd probably want to additionally spin up an MariaDB container here, depending on your envirionment
-# This configuration assumes you are using an external database
 
 services:
     app:
@@ -13,3 +11,13 @@ services:
         ports:
             - 25:25
             - 8080:4000
+        security_opt:
+            - seccomp:seccomp-chrome.json
+    db:
+        image: mariadb:10.8
+        restart: always
+        volumes:
+        - ./db_data/:/var/lib/mysql
+        environment:
+        - MARIADB_ROOT_HOST=%
+        - MARIADB_RANDOM_ROOT_PASSWORD=yes
