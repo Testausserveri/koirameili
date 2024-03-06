@@ -23,7 +23,7 @@ RUN yarn build
 
 WORKDIR /usr/src/app
 
-RUN addgroup -S koirameili && adduser -S koirameili -G koirameili
+RUN addgroup -S koirameili && adduser -S koirameili -G koirameili && chown -R koirameili:koirameili /usr/src/app
 USER koirameili
 EXPOSE 25
 
