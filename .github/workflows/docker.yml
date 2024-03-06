@@ -29,7 +29,6 @@ jobs:
         with:
           context: .
           push: true
-          attests: type=sbom
           platforms: linux/amd64,linux/arm64
           tags: ghcr.io/testausserveri/koirameili:latest,ghcr.io/testausserveri/koirameili:${{ github.event.release.tag_name }}
           
