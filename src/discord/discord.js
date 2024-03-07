@@ -7,9 +7,11 @@ import path from "path"
 import crypto from "crypto"
 import convertSvgToPng from "convert-svg-to-png"
 import { welcomeMessage } from "../api/api.js"
+import { fileURLToPath } from "url"
 const { createConverter } = convertSvgToPng
 
-const welcomeHeaderSvg = await fs.readFile(path.join(import.meta.dirname, "../../frontend/src/welcomeHeader.svg"), 'utf-8')
+const scriptDirectory = path.dirname(fileURLToPath(import.meta.url)) // WTF node 16?!?
+const welcomeHeaderSvg = await fs.readFile(path.join(scriptDirectory, "../../frontend/src/welcomeHeader.svg"), 'utf-8')
 
 const converter = createConverter()
 
