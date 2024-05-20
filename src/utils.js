@@ -18,12 +18,13 @@ export function emailAddressToMailboxName(email) {
         }
     }
 
-    if (mailbox.name.includes('+')) {
-        let nameSplit = mailbox.name.split('+');
+    if (mailbox.name.includes('+') || mailbox.name.includes('zzz')) {
+        let delimiter = mailbox.name.includes('+') ? '+' : 'zzz';
+        let nameSplit = mailbox.name.split(delimiter);
         mailbox.name = nameSplit[1];
         mailbox.label = nameSplit[0];
     }
-
+    
     return mailbox
 }
 
