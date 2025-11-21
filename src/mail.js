@@ -35,7 +35,7 @@ async function onMessage(data) {
             if (!userid) throw new Error(`Mailbox ${mailbox.name} isn't claimed`)
 
             // Abort if from-to pair has been blocked
-            if (await database.models.block.exists(from, mailbox.toString())) {
+            if (await database.models.block.exists(from, recipient.address)) {
                 console.log(`Aborting delivery, block exists ${from} -> ${recipient.address}`)
                 return
             }
