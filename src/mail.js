@@ -7,6 +7,8 @@ import discord from "./discord/discord.js"
 
 export function smtpServer() {
     return new SMTPServer({
+        secure: false,
+        hideSTARTTLS: true,
         onData(stream, session, callback) {
             parser(stream, {}, (err, parsed) => {
                     if (err) {
